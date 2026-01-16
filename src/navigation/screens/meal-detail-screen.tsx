@@ -5,8 +5,9 @@ import MealDetailIngredients from "@/components/meal-detail/meal-detail-ingredie
 import MealDetailInfoRow from "@/components/meal-detail/meal-detail-info-row";
 import { mealsData } from "@/constants/data/data";
 import ParallaxScrollView from "@/components/ui/parallax-scroll-view";
-import { Image, ScrollView, StyleSheet } from "react-native";
+import { Image, StyleSheet } from "react-native";
 import { Chip } from "@/components/ui/chip";
+import MealsDetailSteps from "@/components/meal-detail/meal-detail-steps";
 
 type MealDetailProps = StaticScreenProps<{
   mealId: string;
@@ -66,13 +67,8 @@ function MealDetailScreen({ route }: MealDetailProps) {
         />
         {renderChips()}
         <MealDetailIngredients ingredients={ingredients} />
-        <ScrollView>
-          {steps.map((step, index) => (
-            <ThemedText key={`${index}-${String(step)}`}>
-              {index + 1}. {step}
-            </ThemedText>
-          ))}
-        </ScrollView>
+
+        <MealsDetailSteps steps={steps} />
       </ThemedView>
     </ParallaxScrollView>
   );

@@ -28,6 +28,11 @@ export type CheckboxProps = {
   label?: string;
 
   /**
+   * Optional secondary label rendered to the right of the checkbox.
+   */
+  secondaryLabel?: string;
+
+  /**
    * Disables interaction and dims the control.
    */
   disabled?: boolean;
@@ -53,6 +58,7 @@ export function Checkbox({
   checked,
   onCheckedChange,
   label,
+  secondaryLabel,
   disabled = false,
   size = "md",
   onPress,
@@ -113,15 +119,26 @@ export function Checkbox({
         ) : null}
       </ThemedView>
 
-      {label ? (
-        <ThemedText
-          style={[styles.label, disabled ? styles.labelDisabled : null]}
-          colorName="textSecondary"
-          numberOfLines={2}
-        >
-          {label}
-        </ThemedText>
-      ) : null}
+      <ThemedView style={styles.labelContainer}>
+        {label ? (
+          <ThemedText
+            style={[styles.label, disabled ? styles.labelDisabled : null]}
+            colorName="textSecondary"
+            numberOfLines={2}
+          >
+            {label}
+          </ThemedText>
+        ) : null}
+        {secondaryLabel ? (
+          <ThemedText
+            style={[styles.label, disabled ? styles.labelDisabled : null]}
+            colorName="textSecondary"
+            numberOfLines={2}
+          >
+            {secondaryLabel}
+          </ThemedText>
+        ) : null}
+      </ThemedView>
     </Pressable>
   );
 }
@@ -161,7 +178,11 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "rgba(255,255,255,0.92)",
   },
-
+  labelContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   label: {
     fontSize: 14,
     lineHeight: 18,

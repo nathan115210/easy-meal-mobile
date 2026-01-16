@@ -28,29 +28,45 @@ function MealDetailIngredients({
   return (
     <ThemedView>
       <ThemedView
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
+        style={[
+          styles.headerContainer,
+          { borderBottomColor: colorScheme === "light" ? "black" : "white" },
+        ]}
       >
-        <ThemedText colorName="textSecondary">Ingredients </ThemedText>
-        <IconButton
-          color={colorScheme === "light" ? "black" : "white"}
-          onPress={() => setShowIngredientsInfo(!showIngredientsInfo)}
-          iconName={{
-            ios: "information-circle",
-            android: "information-circle-outline",
+        <View
+          style={[
+            styles.titleContainer,
+            { borderBottomColor: colorScheme === "light" ? "black" : "white" },
+          ]}
+        >
+          <ThemedText colorName="textSecondary">Ingredients </ThemedText>
+          <IconButton
+            size={24}
+            color={colorScheme === "light" ? "black" : "white"}
+            onPress={() => setShowIngredientsInfo(!showIngredientsInfo)}
+            iconName={{
+              ios: "information-circle",
+              android: "information-circle-outline",
+            }}
+          />
+        </View>
+        <Button
+          title="Convert"
+          color={colorScheme === "light" ? "red" : "yellow"}
+          onPress={() => {
+            // TODO: conversion logic here
           }}
-        ></IconButton>
+          accessibilityLabel="Convert Ingredients"
+        ></Button>
       </ThemedView>
       <ThemedView style={{ gap: 10, marginTop: 8 }}>
-        {ingredients.map((ingredient) => (
+        {ingredients.map((ingredient, index) => (
           <Checkbox
-            key={ingredient}
-            label={ingredient}
-            checked={Boolean(checkedIngredients[ingredient])}
-            onCheckedChange={() => toggleIngredient(ingredient)}
+            key={`${ingredient.name}-${index}`}
+            label={ingredient.name}
+            secondaryLabel={ingredient.amount}
+            checked={Boolean(checkedIngredients[ingredient.name])}
+            onCheckedChange={() => toggleIngredient(ingredient.name)}
           />
         ))}
         <Modal
@@ -86,6 +102,19 @@ function MealDetailIngredients({
 }
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderBottomWidth: 2,
+    paddingBlockEnd: 6,
+    marginBlockEnd: 6,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",

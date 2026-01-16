@@ -1,6 +1,9 @@
 export type MealAffordability = "affordable" | "pricey" | "luxurious";
 export type MealComplexity = "simple" | "challenging" | "hard";
-
+export type Ingredient = {
+  name: string;
+  amount: string;
+};
 export interface MealItemProps {
   id: string;
   categoryIds: string[];
@@ -9,7 +12,7 @@ export interface MealItemProps {
   complexity: MealComplexity;
   imageUrl: string;
   duration: number;
-  ingredients: string[];
+  ingredients: Ingredient[];
   steps: string[];
   isGlutenFree: boolean;
   isVegan: boolean;
