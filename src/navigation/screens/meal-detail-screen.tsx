@@ -1,36 +1,20 @@
 import { StaticScreenProps } from "@react-navigation/native";
-import { useState } from "react";
 import { ThemedText } from "@/components/ui/themed-text";
 import { ThemedView } from "@/components/ui/themed-view";
+import MealDetailIngredients from "@/components/meal-detail/meal-detail-ingredients";
+import MealDetailInfoRow from "@/components/meal-detail/meal-detail-info-row";
 import { mealsData } from "@/constants/data/data";
 import ParallaxScrollView from "@/components/ui/parallax-scroll-view";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Modal,
-  Button,
-  View,
-  useColorScheme,
-} from "react-native";
+import { Image, ScrollView, StyleSheet } from "react-native";
 import { Chip } from "@/components/ui/chip";
-import { Checkbox } from "@/components/ui/checkbox";
-import IconButton from "@/components/ui/icon-button";
 
 type MealDetailProps = StaticScreenProps<{
   mealId: string;
 }>;
 
 function MealDetailScreen({ route }: MealDetailProps) {
-  const colorScheme = useColorScheme();
-
   const { mealId } = route.params;
   const mealData = mealsData.find((meal) => meal.id === mealId);
-  const [checkedIngredients, setCheckedIngredients] = useState<
-    Record<string, boolean>
-  >({});
-
-  const [showIngredientsInfo, setShowIngredientsInfo] = useState(false);
 
   if (!mealData) {
     return <ThemedText>Meal not found</ThemedText>;
@@ -47,14 +31,6 @@ function MealDetailScreen({ route }: MealDetailProps) {
     isVegetarian,
     ingredients,
   } = mealData;
-  console.log("mealData", mealData);
-
-  const toggleIngredient = (ingredient: string) => {
-    setCheckedIngredients((prev: Record<string, boolean>) => ({
-      ...prev,
-      [ingredient]: !prev[ingredient],
-    }));
-  };
 
   const renderChips = () => {
     let chips = [];
@@ -64,7 +40,7 @@ function MealDetailScreen({ route }: MealDetailProps) {
     if (chips.length === 0) return null;
 
     return (
-      <ThemedView style={styles.row}>
+      <ThemedView style={styles.chipsRow}>
         {chips.map((chip, index) => (
           <Chip key={index} label={chip} />
         ))}
@@ -83,84 +59,13 @@ function MealDetailScreen({ route }: MealDetailProps) {
     >
       <ThemedView style={styles.contentContainer}>
         <ThemedText type="title">{title}</ThemedText>
-        <ThemedView style={styles.row}>
-          <ThemedText style={styles.subtitle} colorName="textSecondary">
-            {duration}m
-          </ThemedText>
-          <ThemedText style={styles.dot} colorName="textMuted">
-            •
-          </ThemedText>
-          <ThemedText style={styles.subtitle} colorName="textSecondary">
-            {complexity}
-          </ThemedText>
-          <ThemedText style={styles.dot} colorName="textMuted">
-            •
-          </ThemedText>
-          <ThemedText style={styles.subtitle} colorName="textSecondary">
-            {affordability}
-          </ThemedText>
-        </ThemedView>
+        <MealDetailInfoRow
+          duration={duration}
+          complexity={complexity}
+          affordability={affordability}
+        />
         {renderChips()}
-
-        <ThemedView>
-          <ThemedView
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <ThemedText colorName="textSecondary">Ingredients </ThemedText>
-            <IconButton
-              color={colorScheme === "light" ? "black" : "white"}
-              onPress={() => setShowIngredientsInfo(!showIngredientsInfo)}
-              iconName={{
-                ios: "information-circle",
-                android: "information-circle-outline",
-              }}
-            ></IconButton>
-          </ThemedView>
-          <ThemedView style={{ gap: 10, marginTop: 8 }}>
-            {ingredients.map((ingredient) => (
-              <Checkbox
-                key={ingredient}
-                label={ingredient}
-                checked={Boolean(checkedIngredients[ingredient])}
-                onCheckedChange={() => toggleIngredient(ingredient)}
-              />
-            ))}
-            <Modal
-              animationType="slide"
-              transparent={true}
-              onRequestClose={() => {
-                setShowIngredientsInfo(!showIngredientsInfo);
-              }}
-              visible={showIngredientsInfo}
-            >
-              <View style={styles.centeredView}>
-                <ThemedView style={styles.modalView}>
-                  <ThemedText
-                    colorName={
-                      colorScheme === "light"
-                        ? "textSecondary"
-                        : "textOnPrimary"
-                    }
-                  >
-                    All ingredients can be added to your Shopping List with one
-                    tap.{" "}
-                  </ThemedText>
-                  <Button
-                    title="Got it!"
-                    onPress={() => {
-                      setShowIngredientsInfo(!showIngredientsInfo);
-                    }}
-                  />
-                </ThemedView>
-              </View>
-            </Modal>
-          </ThemedView>
-        </ThemedView>
-
+        <MealDetailIngredients ingredients={ingredients} />
         <ScrollView>
           {steps.map((step, index) => (
             <ThemedText key={`${index}-${String(step)}`}>
@@ -187,40 +92,11 @@ const styles = StyleSheet.create({
   contentContainer: {
     gap: 18,
   },
-  row: {
+  chipsRow: {
     flexDirection: "row",
     alignItems: "center",
     flexWrap: "wrap",
     gap: 6,
-  },
-  subtitle: {
-    fontSize: 12,
-    fontWeight: "500",
-    textTransform: "capitalize",
-  },
-  dot: {
-    fontSize: 12,
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    gap: 18,
   },
 });
 

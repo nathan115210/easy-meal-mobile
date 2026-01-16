@@ -30,7 +30,8 @@ const RootStack = createNativeStackNavigator({
         title: "Meals Overview",
         headerBackTitle: "Back",
         headerRight: () => (
-          <Button title="Filter" onPress={() => console.log("Search")} />
+          // TODO: Implement filter functionality
+          <Button title="Filter" onPress={() => console.log("filter")} />
         ),
       },
     },
@@ -54,7 +55,8 @@ const RootStack = createNativeStackNavigator({
             }}
           />
         ),
-        headerRight: () => <ShareButton />, //TODO: add more button, to open the bottom sheet modal
+        //TODO: add more button, to open the bottom sheet modal
+        headerRight: () => <ShareButton />,
       }),
     },
   },
