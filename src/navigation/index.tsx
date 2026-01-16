@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Text } from "react-native";
+import { Button } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CategoriesScreen from "./screens/categories-screen";
 import MealsOverviewScreen from "./screens/meals-overview-screen";

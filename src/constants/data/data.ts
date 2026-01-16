@@ -1,18 +1,77 @@
-import Category from "../models/category";
-//import Meal from "../models/meal";
 import { MealItemProps } from "@/types/meal-type";
+import { CategoryItemProps } from "@/types/category-type";
 
-export const categoriesData: Category[] = [
-  new Category("c1", "Italian", "#f5428d"),
-  new Category("c2", "Quick & Easy", "#f54242"),
-  new Category("c3", "Hamburgers", "#f5a442"),
-  new Category("c4", "German", "#f5d142"),
-  new Category("c5", "Light & Lovely", "#368dff"),
-  new Category("c6", "Exotic", "#41d95d"),
-  new Category("c7", "Breakfast", "#9eecff"),
-  new Category("c8", "Asian", "#b9ffb0"),
-  new Category("c9", "French", "#ffc7ff"),
-  new Category("c10", "Summer", "#47fced"),
+export const categoriesData: CategoryItemProps[] = [
+  {
+    id: "c1",
+    title: "Italian",
+    color: "#f5428d",
+    imageUrl:
+      "https://images.unsplash.com/photo-1525755662778-989d0524087e?w=800&auto=format&fit=crop&q=60",
+  },
+  {
+    id: "c2",
+    title: "Quick & Easy",
+    color: "#f54242",
+    imageUrl:
+      "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&auto=format&fit=crop&q=60",
+  },
+  {
+    id: "c3",
+    title: "Hamburgers",
+    color: "#f5a442",
+    imageUrl:
+      "https://images.unsplash.com/photo-1550547660-d9450f859349?w=800&auto=format&fit=crop&q=60",
+  },
+  {
+    id: "c4",
+    title: "German",
+    color: "#f5d142",
+    imageUrl:
+      "https://images.unsplash.com/photo-1548781365-20c85526b3a8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGdlcm1hbnxlbnwwfHwwfHx8MA%3D%3D",
+  },
+  {
+    id: "c5",
+    title: "Light & Lovely",
+    color: "#368dff",
+    imageUrl:
+      "https://images.unsplash.com/photo-1421622548261-c45bfe178854?w=800&auto=format&fit=crop&q=60",
+  },
+  {
+    id: "c6",
+    title: "Exotic",
+    color: "#41d95d",
+    imageUrl:
+      "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&auto=format&fit=crop&q=60",
+  },
+  {
+    id: "c7",
+    title: "Breakfast",
+    color: "#9eecff",
+    imageUrl:
+      "https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=800&auto=format&fit=crop&q=60",
+  },
+  {
+    id: "c8",
+    title: "Asian",
+    color: "#b9ffb0",
+    imageUrl:
+      "https://images.unsplash.com/photo-1555126634-323283e090fa?w=800&auto=format&fit=crop&q=60",
+  },
+  {
+    id: "c9",
+    title: "French",
+    color: "#ffc7ff",
+    imageUrl:
+      "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&auto=format&fit=crop&q=60",
+  },
+  {
+    id: "c10",
+    title: "Summer",
+    color: "#47fced",
+    imageUrl:
+      "https://images.unsplash.com/photo-1530062845289-9109b2c9c868?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c3VtbWVyJTIwZm9vZHxlbnwwfHwwfHx8MA%3D%3D",
+  },
 ];
 
 export const mealsData: MealItemProps[] = [

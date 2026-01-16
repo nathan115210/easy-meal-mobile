@@ -1,6 +1,31 @@
-import {View, Text, StyleSheet, Pressable, GestureResponderEvent} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  GestureResponderEvent,
+  ImageBackground,
+} from "react-native";
 
-function GridItem({ title, color, onPress }: { title: string; color: string; onPress?: ((event: GestureResponderEvent) => void) | null | undefined }) {
+function GridItem({
+  title,
+  color,
+  onPress,
+  backgroundImage,
+}: {
+  title: string;
+  color: string;
+  onPress?: ((event: GestureResponderEvent) => void) | null | undefined;
+  backgroundImage?: string;
+}) {
+  const renderTextLayer = () => {
+    const backgroundColor = !!backgroundImage ? `${color}60` : color;
+    return (
+      <View style={[styles.titleOverlay, { backgroundColor }]}>
+        <Text style={[styles.titleText]}>{title}</Text>
+      </View>
+    );
+  };
   return (
     <View style={styles.categoryItem}>
       <Pressable
@@ -10,9 +35,19 @@ function GridItem({ title, color, onPress }: { title: string; color: string; onP
         ]}
         onPress={onPress}
       >
-        <View style={[styles.titleContainer, { backgroundColor: color }]}>
-          <Text style={styles.titleText}>{title}</Text>
-        </View>
+        {backgroundImage ? (
+          <ImageBackground
+            source={{
+              uri: backgroundImage,
+            }}
+            resizeMode="cover"
+            style={styles.imageBackground}
+          >
+            {renderTextLayer()}
+          </ImageBackground>
+        ) : (
+          renderTextLayer()
+        )}
       </Pressable>
     </View>
   );
@@ -41,16 +76,25 @@ const styles = StyleSheet.create({
   pressableContainer: {
     flex: 1,
   },
-  titleContainer: {
+  imageBackground: {
     flex: 1,
-    fontWeight: "bold",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
     borderRadius: 10,
+    overflow: "hidden",
+  },
+  titleOverlay: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    overflow: "hidden",
   },
   titleText: {
     fontSize: 18,
+    color: "white",
+    fontWeight: "bold",
+    textShadowColor: "rgba(0, 0, 0, 0.7)",
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 2,
   },
 });
 

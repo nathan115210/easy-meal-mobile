@@ -1,6 +1,6 @@
 import { FlatList } from "react-native";
 import { categoriesData } from "@/constants/data/data";
-import Category from "@/constants/models/category";
+import { type CategoryItemProps } from "@/types/category-type";
 import GridItem from "@/components/ui/grid-item";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -16,11 +16,12 @@ function CategoriesScreen() {
 
   const numColumns = 2; // keep number of columns in a variable so we can use it as the FlatList key
 
-  function renderCategoryItem(item: Category) {
+  function renderCategoryItem(item: CategoryItemProps) {
     return (
       <GridItem
         title={item.title}
         color={item.color}
+        backgroundImage={item.imageUrl}
         onPress={() =>
           navigation.navigate("MealsOverview", {
             categoryId: item.id,

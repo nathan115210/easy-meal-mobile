@@ -5,7 +5,9 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useLayoutEffect } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { getContrastColor } from "@/utils/get-contrast-color";
-import MealItem from "@/components/meal-item";
+import Card from "@/components/ui/card";
+import MealDetailInfoRow from "@/components/meal-detail/meal-detail-info-row";
+import { MealItemProps } from "@/types/meal-type";
 
 type RootStackParamList = {
   Categories: undefined;
@@ -41,29 +43,29 @@ function MealsOverviewScreen({ route }: MealsOverviewProps) {
     meal.categoryIds.includes(categoryId),
   );
 
+  function renderMealItemCard(item: MealItemProps) {
+    const { id, title, imageUrl, duration, complexity, affordability } = item;
+    const handleOnPress = (mealId: string) =>
+      navigation.navigate("MealDetail", { mealId });
+    return (
+      <Card title={title} imageUrl={imageUrl} onPress={() => handleOnPress(id)}>
+        <MealDetailInfoRow
+          duration={duration}
+          complexity={complexity}
+          affordability={affordability}
+          background="surface"
+        />
+      </Card>
+    );
+  }
+
   return (
     <ThemedView style={styles.container}>
       <FlatList
         contentContainerStyle={styles.mealsListContent}
         data={displayedMeals}
         ItemSeparatorComponent={() => <ThemedView style={styles.separator} />}
-        renderItem={({ item }) => {
-          const { id, title, imageUrl, duration, complexity, affordability } =
-            item;
-          return (
-            <MealItem
-              id={id}
-              title={title}
-              imageUrl={imageUrl}
-              duration={duration}
-              complexity={complexity}
-              affordability={affordability}
-              onPress={(mealId) =>
-                navigation.navigate("MealDetail", { mealId })
-              }
-            />
-          );
-        }}
+        renderItem={({ item }) => renderMealItemCard(item)}
         keyExtractor={(item) => item.id}
       />
     </ThemedView>
