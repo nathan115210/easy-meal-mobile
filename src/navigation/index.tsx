@@ -1,20 +1,21 @@
 import React from "react";
 import { Button } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CategoriesScreen from "./screens/categories-screen";
 import MealsOverviewScreen from "./screens/meals-overview-screen";
 import MealDetailScreen from "./screens/meal-detail-screen";
 import { createStaticNavigation } from "@react-navigation/native";
 import IconButton from "@/components/ui/icon-button";
 import ShareButton from "@/components/share-button";
 
+import { BottomTabs } from "./bottom-tabs/bottom-tab";
+
 const RootStack = createNativeStackNavigator({
+  initialRouteName: "BottomTabs",
   screens: {
-    Categories: {
-      screen: CategoriesScreen,
+    BottomTabs: {
+      screen: BottomTabs,
       options: {
-        title: "Categories",
-        //headerShown: false,
+        headerShown: false,
       },
     },
     MealsOverview: {
