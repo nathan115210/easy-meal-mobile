@@ -4,8 +4,8 @@ import { ThemedText } from "@/components/ui/themed-text";
 import { ThemedView } from "@/components/ui/themed-view";
 import IconButton from "@/components/ui/icon-button";
 import { Checkbox } from "@/components/ui/checkbox";
-
 import { MealItemProps } from "@/types/meal-type";
+import BottomSheetModal from "@/components/ui/bottom-sheet-modal";
 
 function MealDetailIngredients({
   ingredients,
@@ -69,33 +69,16 @@ function MealDetailIngredients({
             onCheckedChange={() => toggleIngredient(ingredient.name)}
           />
         ))}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          onRequestClose={() => {
-            setShowIngredientsInfo(!showIngredientsInfo);
-          }}
+
+        <BottomSheetModal
           visible={showIngredientsInfo}
+          onClose={() => setShowIngredientsInfo(!showIngredientsInfo)}
+          title="Quick Add"
         >
-          <View style={styles.centeredView}>
-            <ThemedView style={styles.modalView}>
-              <ThemedText
-                colorName={
-                  colorScheme === "light" ? "textSecondary" : "textOnPrimary"
-                }
-              >
-                All ingredients can be added to your Shopping List with one
-                tap.{" "}
-              </ThemedText>
-              <Button
-                title="Got it!"
-                onPress={() => {
-                  setShowIngredientsInfo(!showIngredientsInfo);
-                }}
-              />
-            </ThemedView>
-          </View>
-        </Modal>
+          <ThemedText>
+            All ingredients can be added to your Shopping List with one tap.
+          </ThemedText>
+        </BottomSheetModal>
       </ThemedView>
     </ThemedView>
   );

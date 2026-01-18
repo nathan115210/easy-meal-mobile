@@ -1,5 +1,7 @@
 import { Assets as NavigationAssets } from "@react-navigation/elements";
 import { DarkTheme, DefaultTheme } from "@react-navigation/native";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Asset } from "expo-asset";
 import { createURL } from "expo-linking";
 import * as SplashScreen from "expo-splash-screen";
@@ -31,18 +33,22 @@ export default function App() {
         };
 
   return (
-    <>
-      <StatusBar style="auto" />
-      <Navigation
-        theme={theme}
-        linking={{
-          enabled: "auto",
-          prefixes: [prefix],
-        }}
-        onReady={() => {
-          SplashScreen.hideAsync();
-        }}
-      />
-    </>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <BottomSheetModalProvider>
+        <>
+          <StatusBar style="auto" />
+          <Navigation
+            theme={theme}
+            linking={{
+              enabled: "auto",
+              prefixes: [prefix],
+            }}
+            onReady={() => {
+              SplashScreen.hideAsync();
+            }}
+          />
+        </>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }

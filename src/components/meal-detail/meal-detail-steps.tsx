@@ -1,24 +1,82 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ThemedText } from "@/components/ui/themed-text";
 import { ThemedView } from "@/components/ui/themed-view";
-import { Chip } from "@/components/ui/chip";
 import {
   ScrollView,
   StyleSheet,
   useColorScheme,
   Button,
-  Modal,
-  FlatList,
-  Alert,
+  Image,
 } from "react-native";
-import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
-import IconButton from "@/components/ui/icon-button";
-import { Colors } from "@/constants/theme";
+import { type Step } from "@/types/meal-type";
+import MealDetailCookMode from "./meal-detail-cook-mode";
+import { isValidUrl } from "@/utils/is-valid-url";
 
-function MealsDetailSteps({ steps }: { steps: string[] }) {
+function MealsDetailSteps({ steps }: { steps: Step[] }) {
   const colorScheme = useColorScheme();
   const [showCookingMode, setShowCookingMode] = useState(false);
-  console.log(showCookingMode);
+  const [validImageUrls, setValidImageUrls] = useState<Record<string, boolean>>(
+    {},
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function validateAllStepImages() {
+      const urls = Array.from(
+        new Set(
+          steps
+            .map((s) => s.image)
+            .filter((u): u is string => typeof u === "string" && u.length > 0),
+        ),
+      );
+
+      if (urls.length === 0) {
+        if (!cancelled) setValidImageUrls({});
+        return;
+      }
+
+      const results = await Promise.all(
+        urls.map(async (u) => {
+          const ok = await isValidUrl(u);
+          return [u, ok] as const;
+        }),
+      );
+
+      if (cancelled) return;
+
+      const map: Record<string, boolean> = {};
+      for (const [u, ok] of results) map[u] = ok;
+      setValidImageUrls(map);
+    }
+
+    validateAllStepImages();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [steps]);
+
+  const renderStepItem = ({ item }: { item: Step }) => {
+    const shouldRenderImage =
+      !!item.image && (validImageUrls[item.image] ?? false);
+
+    return (
+      <>
+        {shouldRenderImage && (
+          <Image
+            source={{
+              uri: item.image!,
+              width: 60,
+              height: 60,
+            }}
+            resizeMode="cover"
+          />
+        )}
+        <ThemedText style={{ flex: 1 }}>{item.description}</ThemedText>
+      </>
+    );
+  };
 
   return (
     <>
@@ -38,87 +96,22 @@ function MealsDetailSteps({ steps }: { steps: string[] }) {
           accessibilityLabel="Cooking mode"
         ></Button>
       </ThemedView>
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.stepsList}>
         {steps.map((step, index) => (
-          <ThemedText key={`${index}-${String(step)}`}>
-            {index + 1}. {step}
-          </ThemedText>
+          <ThemedView
+            colorName="surface"
+            style={styles.stepItem}
+            key={`${index}-${step.description}`}
+          >
+            {renderStepItem({ item: step })}
+          </ThemedView>
         ))}
       </ScrollView>
-
-      <Modal
-        style={styles.cookModal}
-        animationType="slide"
-        visible={showCookingMode}
-        onRequestClose={() => {
-          setShowCookingMode(false);
-        }}
-        onDismiss={() => {
-          setShowCookingMode(false);
-        }}
-      >
-        <SafeAreaProvider>
-          <SafeAreaView style={styles.cookModal} edges={["top"]}>
-            <ThemedView style={styles.cookModalContainer}>
-              <ThemedView
-                style={[
-                  styles.modalHeader,
-                  {
-                    backgroundColor: `${Colors[colorScheme === "light" ? "light" : "dark"].placeholder}`,
-                  },
-                ]}
-              >
-                <IconButton
-                  size={36}
-                  iconName={{
-                    ios: "close",
-                    android: "close",
-                  }}
-                  onPress={() => setShowCookingMode(false)}
-                ></IconButton>
-                <Chip
-                  label="Ingredients"
-                  onPress={() =>
-                    console.log("TODO: show ingredients in bottom sheet modal")
-                  }
-                ></Chip>
-              </ThemedView>
-              <ThemedView>
-                <FlatList
-                  contentContainerStyle={{ padding: 16 }}
-                  data={steps}
-                  renderItem={(step) => {
-                    const { item, index } = step;
-                    const totalSteps = steps.length;
-                    return (
-                      <ThemedView style={styles.stepContainer}>
-                        <ThemedView
-                          colorName="surface"
-                          style={styles.stepCounter}
-                        >
-                          <ThemedText style={styles.stepCounterText}>
-                            Step:{" "}
-                          </ThemedText>
-                          <ThemedText style={styles.stepCounterText}>
-                            {index + 1}
-                          </ThemedText>
-                          <ThemedText
-                            colorName="textMuted"
-                            style={styles.stepCounterText}
-                          >
-                            /{totalSteps}
-                          </ThemedText>
-                        </ThemedView>
-                        <ThemedText style={styles.stepText}>{item}</ThemedText>
-                      </ThemedView>
-                    );
-                  }}
-                />
-              </ThemedView>
-            </ThemedView>
-          </SafeAreaView>
-        </SafeAreaProvider>
-      </Modal>
+      <MealDetailCookMode
+        isVisible={showCookingMode}
+        onClose={() => setShowCookingMode(false)}
+        steps={steps}
+      />
     </>
   );
 }
@@ -132,44 +125,20 @@ const styles = StyleSheet.create({
     paddingBlockEnd: 6,
     marginBlockEnd: 6,
   },
-  cookModal: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  cookModalContainer: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    borderTopEndRadius: 18,
-    borderTopStartRadius: 18,
-    overflow: "hidden",
-  },
-  modalHeader: {
-    paddingHorizontal: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    alignSelf: "stretch",
-    justifyContent: "space-between",
-    paddingVertical: 16,
-  },
+
   close: { fontSize: 16 },
   content: { flex: 1, padding: 16 },
-  stepContainer: {
-    paddingVertical: 8,
+
+  stepsList: {
+    gap: 12,
+    flex: 1,
   },
-  stepCounter: {
+  stepItem: {
     flexDirection: "row",
-    marginBottom: 8,
-    paddingInlineStart: 4,
-  },
-  stepCounterText: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  stepText: {
-    fontSize: 24,
-    fontWeight: "400",
+    alignItems: "center",
+    padding: 12,
+    gap: 12,
+    borderRadius: 8,
   },
 });
 

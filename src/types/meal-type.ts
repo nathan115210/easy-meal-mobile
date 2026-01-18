@@ -4,6 +4,10 @@ export type Ingredient = {
   name: string;
   amount: string;
 };
+export type Step = {
+  image?: string;
+  description: string;
+};
 export interface MealItemProps {
   id: string;
   categoryIds: string[];
@@ -13,7 +17,7 @@ export interface MealItemProps {
   imageUrl: string;
   duration: number;
   ingredients: Ingredient[];
-  steps: string[];
+  steps: Step[];
   isGlutenFree: boolean;
   isVegan: boolean;
   isVegetarian: boolean;

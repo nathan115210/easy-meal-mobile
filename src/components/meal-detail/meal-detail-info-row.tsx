@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 import { ThemedText } from "@/components/ui/themed-text";
 import { ThemedView, type ThemedViewProps } from "@/components/ui/themed-view";
-
 import { MealItemProps } from "@/types/meal-type";
 
 type MealDetailInfoRowProps = Pick<

@@ -2,7 +2,6 @@ import React from "react";
 import {
   Pressable,
   StyleSheet,
-  View,
   type PressableProps,
   useColorScheme,
 } from "react-native";
