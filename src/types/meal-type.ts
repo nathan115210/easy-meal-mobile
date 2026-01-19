@@ -2,7 +2,8 @@ export type MealAffordability = "affordable" | "pricey" | "luxurious";
 export type MealComplexity = "simple" | "challenging" | "hard";
 export type Ingredient = {
   name: string;
-  amount: string;
+  amount: number;
+  unit: string;
 };
 export type Step = {
   image?: string;

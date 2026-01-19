@@ -13,11 +13,11 @@ import { type MealItemProps } from "@/types/meal-type";
  * @returns The full meal object if found, otherwise `null`.
  */
 export function useMeal(mealId?: string): MealItemProps | null {
-  const meal = useMemo(() => {
+  const meal = useMemo<MealItemProps | null>(() => {
     if (!mealId) {
       return null;
     }
-    return mealsData.find((m) => m.id === mealId);
+    return mealsData.find((m) => m.id === mealId) ?? null;
   }, [mealId]);
 
   return meal;

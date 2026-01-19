@@ -156,12 +156,12 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=800&auto=format&fit=crop&q=60",
     duration: 20,
     ingredients: [
-      { name: "Spaghetti", amount: "250g" },
-      { name: "Tomatoes", amount: "4" },
-      { name: "Olive Oil", amount: "1 tbsp" },
-      { name: "Onion", amount: "1" },
-      { name: "Garlic", amount: "2 cloves" },
-      { name: "Salt", amount: "to taste" },
+      { name: "Spaghetti", amount: 250, unit: "g" },
+      { name: "Tomatoes", amount: 4, unit: "" },
+      { name: "Olive Oil", amount: 1, unit: "tbsp" },
+      { name: "Onion", amount: 1, unit: "" },
+      { name: "Garlic", amount: 2, unit: "cloves" },
+      { name: "Salt", amount: 0, unit: "to taste" },
     ],
     steps: [
       {
@@ -197,11 +197,11 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1604908177522-42944e6b8b1d?w=800&auto=format&fit=crop&q=60",
     duration: 30,
     ingredients: [
-      { name: "Chicken Breast", amount: "2" },
-      { name: "Olive Oil", amount: "1 tbsp" },
-      { name: "Salt", amount: "to taste" },
-      { name: "Pepper", amount: "to taste" },
-      { name: "Paprika", amount: "1 tsp" },
+      { name: "Chicken Breast", amount: 2, unit: "" },
+      { name: "Olive Oil", amount: 1, unit: "tbsp" },
+      { name: "Salt", amount: 0, unit: "to taste" },
+      { name: "Pepper", amount: 0, unit: "to taste" },
+      { name: "Paprika", amount: 1, unit: "tsp" },
     ],
     steps: [
       {
@@ -237,12 +237,12 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1550547660-d9450f859349?w=800&auto=format&fit=crop&q=60",
     duration: 45,
     ingredients: [
-      { name: "Beef Patty", amount: "2" },
-      { name: "Burger Buns", amount: "2" },
-      { name: "Cheese", amount: "2 slices" },
-      { name: "Lettuce", amount: "a few leaves" },
-      { name: "Tomato", amount: "1" },
-      { name: "Onion", amount: "1/2" },
+      { name: "Beef Patty", amount: 2, unit: "" },
+      { name: "Burger Buns", amount: 2, unit: "" },
+      { name: "Cheese", amount: 2, unit: "slices" },
+      { name: "Lettuce", amount: 0, unit: "a few leaves" },
+      { name: "Tomato", amount: 1, unit: "" },
+      { name: "Onion", amount: 0.5, unit: "" },
     ],
     steps: [
       {
@@ -278,11 +278,11 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=60",
     duration: 25,
     ingredients: [
-      { name: "Quinoa", amount: "1 cup" },
-      { name: "Chickpeas", amount: "1 can" },
-      { name: "Avocado", amount: "1" },
-      { name: "Spinach", amount: "2 cups" },
-      { name: "Carrots", amount: "2" },
+      { name: "Quinoa", amount: 1, unit: "cup" },
+      { name: "Chickpeas", amount: 1, unit: "can" },
+      { name: "Avocado", amount: 1, unit: "" },
+      { name: "Spinach", amount: 2, unit: "cups" },
+      { name: "Carrots", amount: 2, unit: "" },
     ],
     steps: [
       {
@@ -318,11 +318,11 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=60",
     duration: 60,
     ingredients: [
-      { name: "Arborio Rice", amount: "1 1/2 cups" },
-      { name: "Mushrooms", amount: "250g" },
-      { name: "Vegetable Stock", amount: "4 cups" },
-      { name: "Butter", amount: "2 tbsp" },
-      { name: "Parmesan Cheese", amount: "1/2 cup" },
+      { name: "Arborio Rice", amount: 1.5, unit: "cups" },
+      { name: "Mushrooms", amount: 250, unit: "g" },
+      { name: "Vegetable Stock", amount: 4, unit: "cups" },
+      { name: "Butter", amount: 2, unit: "tbsp" },
+      { name: "Parmesan Cheese", amount: 0.5, unit: "cup" },
     ],
     steps: [
       {
@@ -358,10 +358,10 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1548781365-20c85526b3a8?w=800&auto=format&fit=crop&q=60",
     duration: 35,
     ingredients: [
-      { name: "Bratwurst", amount: "3" },
-      { name: "Sauerkraut", amount: "250g" },
-      { name: "Mustard", amount: "2 tbsp" },
-      { name: "Potatoes", amount: "3" },
+      { name: "Bratwurst", amount: 3, unit: "" },
+      { name: "Sauerkraut", amount: 250, unit: "g" },
+      { name: "Mustard", amount: 2, unit: "tbsp" },
+      { name: "Potatoes", amount: 3, unit: "" },
     ],
     steps: [
       {
@@ -397,10 +397,10 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&auto=format&fit=crop&q=60",
     duration: 40,
     ingredients: [
-      { name: "Coconut Milk", amount: "1 can" },
-      { name: "Green Curry Paste", amount: "2 tbsp" },
-      { name: "Chicken or Tofu", amount: "300g" },
-      { name: "Basil", amount: "a handful" },
+      { name: "Coconut Milk", amount: 1, unit: "can" },
+      { name: "Green Curry Paste", amount: 2, unit: "tbsp" },
+      { name: "Chicken or Tofu", amount: 300, unit: "g" },
+      { name: "Basil", amount: 0, unit: "a handful" },
     ],
     steps: [
       {
@@ -436,10 +436,10 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=800&auto=format&fit=crop&q=60",
     duration: 20,
     ingredients: [
-      { name: "Flour", amount: "1 cup" },
-      { name: "Milk", amount: "1 cup" },
-      { name: "Egg", amount: "1" },
-      { name: "Baking Powder", amount: "1 tsp" },
+      { name: "Flour", amount: 1, unit: "cup" },
+      { name: "Milk", amount: 1, unit: "cup" },
+      { name: "Egg", amount: 1, unit: "" },
+      { name: "Baking Powder", amount: 1, unit: "tsp" },
     ],
     steps: [
       {
@@ -475,10 +475,10 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1555126634-323283e090fa?w=800&auto=format&fit=crop&q=60",
     duration: 25,
     ingredients: [
-      { name: "Salmon", amount: "200g" },
-      { name: "Rice", amount: "1 cup" },
-      { name: "Soy Sauce", amount: "2 tbsp" },
-      { name: "Cucumber", amount: "1/2" },
+      { name: "Salmon", amount: 200, unit: "g" },
+      { name: "Rice", amount: 1, unit: "cup" },
+      { name: "Soy Sauce", amount: 2, unit: "tbsp" },
+      { name: "Cucumber", amount: 0.5, unit: "" },
     ],
     steps: [
       {
@@ -514,10 +514,10 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=800&auto=format&fit=crop&q=60",
     duration: 45,
     ingredients: [
-      { name: "Eggplant", amount: "1" },
-      { name: "Zucchini", amount: "1" },
-      { name: "Tomatoes", amount: "3" },
-      { name: "Olive Oil", amount: "2 tbsp" },
+      { name: "Eggplant", amount: 1, unit: "" },
+      { name: "Zucchini", amount: 1, unit: "" },
+      { name: "Tomatoes", amount: 3, unit: "" },
+      { name: "Olive Oil", amount: 2, unit: "tbsp" },
     ],
     steps: [
       {
@@ -553,10 +553,10 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1530062845289-9109b2c9c868?w=800&auto=format&fit=crop&q=60",
     duration: 15,
     ingredients: [
-      { name: "Tomatoes", amount: "5" },
-      { name: "Cucumber", amount: "1" },
-      { name: "Olive Oil", amount: "2 tbsp" },
-      { name: "Vinegar", amount: "1 tbsp" },
+      { name: "Tomatoes", amount: 5, unit: "" },
+      { name: "Cucumber", amount: 1, unit: "" },
+      { name: "Olive Oil", amount: 2, unit: "tbsp" },
+      { name: "Vinegar", amount: 1, unit: "tbsp" },
     ],
     steps: [
       {
@@ -592,10 +592,10 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?w=800&auto=format&fit=crop&q=60",
     duration: 25,
     ingredients: [
-      { name: "Tortillas", amount: "4" },
-      { name: "Chicken", amount: "250g" },
-      { name: "Salsa", amount: "4 tbsp" },
-      { name: "Lime", amount: "1" },
+      { name: "Tortillas", amount: 4, unit: "" },
+      { name: "Chicken", amount: 250, unit: "g" },
+      { name: "Salsa", amount: 4, unit: "tbsp" },
+      { name: "Lime", amount: 1, unit: "" },
     ],
     steps: [
       {
@@ -631,10 +631,10 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1604909053196-0f148bdff3e7?w=800&auto=format&fit=crop&q=60",
     duration: 35,
     ingredients: [
-      { name: "Chickpeas", amount: "1 can" },
-      { name: "Tomatoes", amount: "3" },
-      { name: "Onion", amount: "1" },
-      { name: "Garam Masala", amount: "1 tsp" },
+      { name: "Chickpeas", amount: 1, unit: "can" },
+      { name: "Tomatoes", amount: 3, unit: "" },
+      { name: "Onion", amount: 1, unit: "" },
+      { name: "Garam Masala", amount: 1, unit: "tsp" },
     ],
     steps: [
       {
@@ -670,10 +670,10 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1421622548261-c45bfe178854?w=800&auto=format&fit=crop&q=60",
     duration: 10,
     ingredients: [
-      { name: "Cucumber", amount: "1" },
-      { name: "Tomatoes", amount: "2" },
-      { name: "Feta", amount: "100g" },
-      { name: "Olives", amount: "50g" },
+      { name: "Cucumber", amount: 1, unit: "" },
+      { name: "Tomatoes", amount: 2, unit: "" },
+      { name: "Feta", amount: 100, unit: "g" },
+      { name: "Olives", amount: 50, unit: "g" },
     ],
     steps: [
       {
@@ -709,10 +709,10 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1553621042-f6e147245754?w=800&auto=format&fit=crop&q=60",
     duration: 20,
     ingredients: [
-      { name: "Shrimp", amount: "300g" },
-      { name: "Garlic", amount: "3 cloves" },
-      { name: "Butter", amount: "2 tbsp" },
-      { name: "Lemon", amount: "1" },
+      { name: "Shrimp", amount: 300, unit: "g" },
+      { name: "Garlic", amount: 3, unit: "cloves" },
+      { name: "Butter", amount: 2, unit: "tbsp" },
+      { name: "Lemon", amount: 1, unit: "" },
     ],
     steps: [
       {
@@ -748,9 +748,9 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=800&auto=format&fit=crop&q=60",
     duration: 30,
     ingredients: [
-      { name: "Dark Chocolate", amount: "150g" },
-      { name: "Cream", amount: "200ml" },
-      { name: "Sugar", amount: "1 tbsp" },
+      { name: "Dark Chocolate", amount: 150, unit: "g" },
+      { name: "Cream", amount: 200, unit: "ml" },
+      { name: "Sugar", amount: 1, unit: "tbsp" },
     ],
     steps: [
       {
@@ -786,9 +786,9 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=900&auto=format&fit=crop&q=60",
     duration: 90,
     ingredients: [
-      { name: "Pork Ribs", amount: "1 rack" },
-      { name: "BBQ Sauce", amount: "1/2 cup" },
-      { name: "Salt & Pepper", amount: "to taste" },
+      { name: "Pork Ribs", amount: 1, unit: "rack" },
+      { name: "BBQ Sauce", amount: 0.5, unit: "cup" },
+      { name: "Salt & Pepper", amount: 0, unit: "to taste" },
     ],
     steps: [
       {
@@ -824,10 +824,10 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1543353071-087092ec393a?w=800&auto=format&fit=crop&q=60",
     duration: 75,
     ingredients: [
-      { name: "Beef", amount: "400g" },
-      { name: "Potatoes", amount: "3" },
-      { name: "Carrots", amount: "2" },
-      { name: "Stock", amount: "4 cups" },
+      { name: "Beef", amount: 400, unit: "g" },
+      { name: "Potatoes", amount: 3, unit: "" },
+      { name: "Carrots", amount: 2, unit: "" },
+      { name: "Stock", amount: 4, unit: "cups" },
     ],
     steps: [
       {
@@ -863,9 +863,9 @@ export const mealsData: MealItemProps[] = [
       "https://images.unsplash.com/photo-1544145945-f90425340c7e?w=800&auto=format&fit=crop&q=60",
     duration: 5,
     ingredients: [
-      { name: "Frozen Berries", amount: "1 cup" },
-      { name: "Milk", amount: "250ml" },
-      { name: "Protein Powder", amount: "1 scoop" },
+      { name: "Frozen Berries", amount: 1, unit: "cup" },
+      { name: "Milk", amount: 250, unit: "ml" },
+      { name: "Protein Powder", amount: 1, unit: "scoop" },
     ],
     steps: [
       {
