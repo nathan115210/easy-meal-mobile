@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { ThemedText } from "@/components/ui/themed-text";
 import { ThemedView } from "@/components/ui/themed-view";
 import {
@@ -9,12 +9,16 @@ import {
   Image,
 } from "react-native";
 import { type Step } from "@/types/meal-type";
-import MealDetailCookMode from "./meal-detail-cook-mode";
 import { isValidUrl } from "@/utils/is-valid-url";
+import MealDetailCookMode from "@/components/meal-detail/meal-detail-cook-mode";
+import { useMeal } from "@/hooks/use-meal";
 
-function MealsDetailSteps({ steps }: { steps: Step[] }) {
+function MealsDetailSteps({ mealId }: { mealId: string }) {
+  const meal = useMeal(mealId);
+  const steps = useMemo(() => meal?.steps ?? [], [meal?.steps]);
+
   const colorScheme = useColorScheme();
-  const [showCookingMode, setShowCookingMode] = useState(false);
+  const [showCookingModeModal, setShowCookingModeModal] = useState(false);
   const [validImageUrls, setValidImageUrls] = useState<Record<string, boolean>>(
     {},
   );
@@ -57,6 +61,11 @@ function MealsDetailSteps({ steps }: { steps: Step[] }) {
     };
   }, [steps]);
 
+  if (!meal) {
+    // Render nothing if the meal isn't found
+    return null;
+  }
+
   const renderStepItem = ({ item }: { item: Step }) => {
     const shouldRenderImage =
       !!item.image && (validImageUrls[item.image] ?? false);
@@ -90,12 +99,16 @@ function MealsDetailSteps({ steps }: { steps: Step[] }) {
         <Button
           title="Cooking mode"
           color={colorScheme === "light" ? "red" : "yellow"}
-          onPress={() => {
-            setShowCookingMode(true);
-          }}
+          onPress={() => setShowCookingModeModal(true)}
           accessibilityLabel="Cooking mode"
         ></Button>
       </ThemedView>
+      {/*Cook mode modal*/}
+      <MealDetailCookMode
+        meal={meal}
+        isVisible={showCookingModeModal}
+        onClose={() => setShowCookingModeModal(false)}
+      />
       <ScrollView contentContainerStyle={styles.stepsList}>
         {steps.map((step, index) => (
           <ThemedView
@@ -107,11 +120,6 @@ function MealsDetailSteps({ steps }: { steps: Step[] }) {
           </ThemedView>
         ))}
       </ScrollView>
-      <MealDetailCookMode
-        isVisible={showCookingMode}
-        onClose={() => setShowCookingMode(false)}
-        steps={steps}
-      />
     </>
   );
 }

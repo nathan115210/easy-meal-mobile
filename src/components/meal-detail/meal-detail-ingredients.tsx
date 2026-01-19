@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, Modal, Button, View, useColorScheme } from "react-native";
+import { StyleSheet, Button, View, useColorScheme } from "react-native";
 import { ThemedText } from "@/components/ui/themed-text";
 import { ThemedView } from "@/components/ui/themed-view";
 import IconButton from "@/components/ui/icon-button";

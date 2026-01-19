@@ -1,114 +1,134 @@
+import { useEffect, useState } from "react";
 import { ThemedText } from "@/components/ui/themed-text";
 import { ThemedView } from "@/components/ui/themed-view";
 import IconButton from "@/components/ui/icon-button";
 import { Chip } from "@/components/ui/chip";
-import {
-  StyleSheet,
-  Modal,
-  FlatList,
-  View,
-  useColorScheme,
-} from "react-native";
-import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
-import { Colors } from "@/constants/theme";
-import { type Step } from "@/types/meal-type";
+import { StyleSheet, Modal, FlatList, View, ScrollView } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { type Step, type MealItemProps } from "@/types/meal-type";
 import Card from "@/components/ui/card";
+import { InlineBottomSheet } from "@/components/ui/inline-bottom-sheet";
 
 function MealDetailCookMode({
-  steps,
+  meal,
   onClose,
   isVisible,
 }: {
-  steps: Step[];
+  meal: MealItemProps;
   onClose: () => void;
   isVisible: boolean;
 }) {
-  const colorScheme = useColorScheme();
+  const insets = useSafeAreaInsets();
+  const { steps, ingredients } = meal;
+
+  const [showIngredientsList, setShowIngredientsList] = useState(false);
+
+  useEffect(() => {
+    if (!isVisible && showIngredientsList) {
+      setShowIngredientsList(false);
+    }
+  }, [isVisible, showIngredientsList]);
+
+  const handleCloseCookMode = () => {
+    setShowIngredientsList(false);
+    onClose();
+  };
+
+  const handleOpenIngredients = () => {
+    if (!isVisible) return;
+    setShowIngredientsList(true);
+  };
 
   return (
-    <Modal
-      style={styles.cookModal}
-      animationType="slide"
-      visible={!!isVisible}
-      onRequestClose={onClose}
-      onDismiss={onClose}
-    >
-      <SafeAreaProvider>
-        <SafeAreaView style={styles.cookModal} edges={["top"]}>
-          <ThemedView style={styles.cookModalContainer}>
-            <ThemedView
-              style={[
-                styles.modalHeader,
-                {
-                  backgroundColor: `${
-                    Colors[colorScheme === "light" ? "light" : "dark"]
-                      .placeholder
-                  }`,
-                },
-              ]}
-            >
-              <IconButton
-                size={36}
-                iconName={{
-                  ios: "close",
-                  android: "close",
-                }}
-                onPress={onClose}
-              ></IconButton>
-              <Chip
-                label="Ingredients"
-                onPress={() =>
-                  console.log("TODO: show ingredients in bottom sheet modal")
-                }
-              ></Chip>
-            </ThemedView>
-
-            <View style={styles.listContainer}>
-              <FlatList
-                contentContainerStyle={styles.listContent}
-                data={steps}
-                keyExtractor={(item: Step, index: number) =>
-                  `${index}-${item.description}`
-                }
-                renderItem={({
-                  item,
-                  index,
-                }: {
-                  item: Step;
-                  index: number;
-                }) => {
-                  const totalSteps = steps.length;
-
-                  return (
-                    <ThemedView style={styles.stepContainer}>
-                      <ThemedView style={styles.stepCounter}>
-                        <ThemedText style={styles.stepCounterText}>
-                          Step:{" "}
-                        </ThemedText>
-                        <ThemedText style={styles.stepCounterText}>
-                          {index + 1}
-                        </ThemedText>
-                        <ThemedText
-                          colorName="textMuted"
-                          style={styles.stepCounterText}
-                        >
-                          /{totalSteps}
-                        </ThemedText>
-                      </ThemedView>
-                      <Card imageUrl={item.image || ""}>
-                        <ThemedText style={styles.stepText}>
-                          {item.description}
-                        </ThemedText>
-                      </Card>
-                    </ThemedView>
-                  );
-                }}
-              />
-            </View>
+    <>
+      <Modal
+        style={[styles.cookModal]}
+        animationType="slide"
+        visible={!!isVisible}
+        onRequestClose={handleCloseCookMode}
+        onDismiss={handleCloseCookMode}
+      >
+        <ThemedView
+          style={[styles.cookModalContainer, { paddingTop: insets.top }]}
+        >
+          <ThemedView style={[styles.modalHeader]}>
+            <IconButton
+              size={36}
+              iconName={{
+                ios: "close",
+                android: "close",
+              }}
+              onPress={handleCloseCookMode}
+            ></IconButton>
+            <Chip label="Ingredients" onPress={handleOpenIngredients}></Chip>
           </ThemedView>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    </Modal>
+
+          <View style={styles.listContainer}>
+            <FlatList
+              contentContainerStyle={styles.listContent}
+              data={steps}
+              keyExtractor={(item: Step, index: number) =>
+                `${index}-${item.description}`
+              }
+              renderItem={({ item, index }: { item: Step; index: number }) => {
+                const totalSteps = steps.length;
+
+                return (
+                  <ThemedView style={styles.stepContainer}>
+                    <ThemedView style={styles.stepCounter}>
+                      <ThemedText style={styles.stepCounterText}>
+                        Step:{" "}
+                      </ThemedText>
+                      <ThemedText style={styles.stepCounterText}>
+                        {index + 1}
+                      </ThemedText>
+                      <ThemedText
+                        colorName="textMuted"
+                        style={styles.stepCounterText}
+                      >
+                        /{totalSteps}
+                      </ThemedText>
+                    </ThemedView>
+                    <Card imageUrl={item.image || ""}>
+                      <ThemedText style={styles.stepText}>
+                        {item.description}
+                      </ThemedText>
+                    </Card>
+                  </ThemedView>
+                );
+              }}
+            />
+          </View>
+        </ThemedView>
+        <InlineBottomSheet
+          visible={showIngredientsList}
+          onClose={() => setShowIngredientsList(false)}
+          title="Ingredients"
+          snapPoints={["80%"]}
+        >
+          <ThemedView style={styles.ingredientsList}>
+            <ScrollView>
+              {ingredients.map((ingredient, index) => {
+                const isLast = index === ingredients.length - 1;
+
+                return (
+                  <View
+                    key={index}
+                    style={[
+                      styles.ingredientsListItem,
+                      isLast && styles.ingredientsListItemLast,
+                    ]}
+                  >
+                    <ThemedText>{ingredient.name}</ThemedText>
+                    <ThemedText>{ingredient.amount}</ThemedText>
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </ThemedView>
+        </InlineBottomSheet>
+      </Modal>
+    </>
   );
 }
 
@@ -124,8 +144,6 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   modalHeader: {
-    borderWidth: 1,
-    borderColor: "gray",
     paddingHorizontal: 16,
     flexDirection: "row",
     alignItems: "center",
@@ -156,6 +174,21 @@ const styles = StyleSheet.create({
   stepCounterText: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  ingredientsList: {
+    padding: 16,
+  },
+  ingredientsListItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderStyle: "dashed",
+    borderBottomWidth: 2,
+    borderColor: "gray",
+    paddingVertical: 8,
+  },
+  ingredientsListItemLast: {
+    borderBottomWidth: 0,
+    paddingBottom: 0,
   },
 });
 
