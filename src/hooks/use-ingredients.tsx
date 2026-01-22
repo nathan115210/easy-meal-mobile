@@ -1,9 +1,9 @@
-import {useEffect, useMemo, useState} from "react";
-import {type Ingredient} from "@/types/meal-type";
+import { useEffect, useMemo, useState } from "react";
+import { type Ingredient } from "@/types/meal-type";
 
 type UseIngredientsProps = {
-    defaultIngredients: Ingredient[];
-    servings?: number;
+  defaultIngredients: Ingredient[];
+  servings?: number;
 };
 
 /**
@@ -15,31 +15,36 @@ type UseIngredientsProps = {
  * - `setIngredients`: allows manual overrides if needed
  */
 export const useIngredients = ({
-                                   defaultIngredients,
-                                   servings,
-                               }: UseIngredientsProps): {
-    ingredients: Ingredient[];
-    servings: number;
-    setServings: React.Dispatch<React.SetStateAction<number>>
+  defaultIngredients,
+  servings,
+}: UseIngredientsProps): {
+  ingredients: Ingredient[];
+  servings: number;
+  setServings: React.Dispatch<React.SetStateAction<number>>;
 } => {
-    const [internalServings, setInternalServings] = useState<number>(servings ?? 1);
-    const effectiveServings = servings ?? internalServings;
+  const [internalServings, setInternalServings] = useState<number>(
+    servings ?? 1,
+  );
+  const effectiveServings = servings ?? internalServings;
 
-    const scaledDefaultIngredients = useMemo(() => {
-        return (defaultIngredients ?? []).map((ing) => ({
-            ...ing,
-            amount: ing.amount * effectiveServings,
-        }));
-    }, [defaultIngredients, effectiveServings]);
+  const scaledDefaultIngredients = useMemo(() => {
+    return (defaultIngredients ?? []).map((ing) => ({
+      ...ing,
+      amount: ing.amount * effectiveServings,
+    }));
+  }, [defaultIngredients, effectiveServings]);
 
-    const [ingredients, setIngredients] = useState<Ingredient[]>(
-        scaledDefaultIngredients,
-    );
+  const [ingredients, setIngredients] = useState<Ingredient[]>(
+    scaledDefaultIngredients,
+  );
 
-
-    // Keep local state in sync when defaults or servings change.
-    useEffect(() => {
-        setIngredients(scaledDefaultIngredients);
-    }, [scaledDefaultIngredients]);
-    return {ingredients, servings: effectiveServings, setServings: setInternalServings};
+  // Keep local state in sync when defaults or servings change.
+  useEffect(() => {
+    setIngredients(scaledDefaultIngredients);
+  }, [scaledDefaultIngredients]);
+  return {
+    ingredients,
+    servings: effectiveServings,
+    setServings: setInternalServings,
+  };
 };

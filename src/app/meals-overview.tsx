@@ -2,12 +2,13 @@ import React, { useMemo } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 
-import { mealsData, categoriesData } from "@/constants/data/data";
+import { categoriesData, mealsData } from "@/constants/data/data";
 import { ThemedView } from "@/components/ui/themed-view";
 import { getContrastColor } from "@/utils/get-contrast-color";
 import Card from "@/components/ui/card";
 import MealDetailInfoRow from "@/components/meal-detail/meal-detail-info-row";
 import { type MealItemProps } from "@/types/meal-type";
+import { useFavorites } from "../context/favorite-context";
 
 type MealsOverviewParams = {
   categoryId?: string;
@@ -20,6 +21,7 @@ type MealsOverviewParams = {
 
 export default function MealsOverviewRoute() {
   const router = useRouter();
+  const { toggleFavorite, isFavorite } = useFavorites();
 
   const { categoryId, categoryName, glutenFree, vegan, vegetarian } =
     useLocalSearchParams<MealsOverviewParams>();
@@ -63,6 +65,8 @@ export default function MealsOverviewRoute() {
       <Card
         title={title}
         imageUrl={imageUrl}
+        isFavorite={isFavorite(id)}
+        onFavoriteToggle={() => toggleFavorite(id)}
         onPress={() =>
           router.push({
             pathname: "/meal/[mealId]",

@@ -46,7 +46,10 @@ export default function IngredientsHeaderButton({
       accessibilityState={{ disabled }}
       onPress={disabled ? undefined : onPress}
       hitSlop={hitSlop}
-      style={({ pressed }) => [styles.container, pressed && !disabled && styles.pressed]}
+      style={({ pressed }) => [
+        styles.container,
+        pressed && !disabled && styles.pressed,
+      ]}
     >
       <View style={styles.pill}>
         <ThemedText style={styles.text}>{label}</ThemedText>

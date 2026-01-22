@@ -6,13 +6,14 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useColorScheme } from "react-native";
 import {
-  ThemeProvider,
   DarkTheme,
   DefaultTheme,
+  ThemeProvider,
 } from "@react-navigation/native";
 import { NavigationThemeColors } from "@/constants/theme";
+import { FavoritesProvider } from "@/context/favorite-context";
 
-// Keep the splash screen visible while we fetch resources
+// TODO: Keep the splash screen visible while we fetch resources
 // SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -28,22 +29,24 @@ export default function RootLayout() {
           colors: NavigationThemeColors.light,
         };
 
-  // You can add logic here to hide the splash screen after assets are loaded
-  // React.useEffect(() => {
-  //   SplashScreen.hideAsync();
+  // TODO: add logic here to hide the splash screen after assets are loaded
+  // react.useeffect(() => {
+  //   splashscreen.hideasync();
   // }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
         <SafeAreaProvider>
-          <ThemeProvider value={theme}>
-            <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              {/*<Stack.Screen name="modal" options={{ presentation: "modal" }} />*/}
-            </Stack>
-          </ThemeProvider>
+          <FavoritesProvider>
+            <ThemeProvider value={theme}>
+              <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                {/*<Stack.Screen name="modal" options={{ presentation: "modal" }} />*/}
+              </Stack>
+            </ThemeProvider>
+          </FavoritesProvider>
         </SafeAreaProvider>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

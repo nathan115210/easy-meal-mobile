@@ -1,15 +1,16 @@
 import { ThemedView } from "@/components/ui/themed-view";
 import {
-  Pressable,
-  StyleSheet,
-  type ViewProps,
   Image,
   type ImageErrorEvent,
   type NativeSyntheticEvent,
+  Pressable,
+  StyleSheet,
+  type ViewProps,
 } from "react-native";
 import { ThemedText } from "@/components/ui/themed-text";
 import { isValidUrl } from "@/utils/is-valid-url";
 import { useEffect, useState } from "react";
+import { Ionicons } from "@expo/vector-icons"; // <-- Add this import
 
 interface CardProps extends ViewProps {
   imageUrl: string;
@@ -20,6 +21,8 @@ interface CardProps extends ViewProps {
   onPress?: () => void | null;
   disabled?: boolean;
   children?: React.ReactNode;
+  isFavorite?: boolean;
+  onFavoriteToggle?: () => void; // <-- Update type to no param
 }
 
 function Card({
@@ -29,6 +32,8 @@ function Card({
   disabled = false,
   style,
   children,
+  isFavorite,
+  onFavoriteToggle,
   ...rest
 }: CardProps) {
   const pressable = typeof onPress === "function" && !disabled;
@@ -56,7 +61,6 @@ function Card({
   }, [imageUrl]);
 
   const onImageError = (_e: NativeSyntheticEvent<ImageErrorEvent>) => {
-    // If the image fails to load at render-time, stop trying to render it.
     setCanRenderImage(false);
   };
 
@@ -89,6 +93,18 @@ function Card({
                   onImageError({} as NativeSyntheticEvent<ImageErrorEvent>)
                 }
               />
+              {typeof onFavoriteToggle === "function" && (
+                <Pressable
+                  style={styles.favoriteIcon}
+                  onPress={onFavoriteToggle}
+                >
+                  <Ionicons
+                    name={isFavorite ? "heart" : "heart-outline"}
+                    size={28}
+                    color={isFavorite ? "red" : "white"}
+                  />
+                </Pressable>
+              )}
             </ThemedView>
           )}
           <ThemedView style={styles.detailsContainer} colorName="surface">
@@ -129,11 +145,19 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: "100%",
     height: 180,
+    justifyContent: "center",
+    alignItems: "center",
   },
   image: {
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+  },
+  favoriteIcon: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+    zIndex: 2,
   },
   detailsContainer: {
     paddingHorizontal: 12,
