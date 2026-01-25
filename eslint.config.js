@@ -16,4 +16,19 @@ module.exports = defineConfig([
       },
     },
   },
+  // Project-specific overrides: relax some rules for file-based routes under src/app
+  {
+    overrides: [
+      {
+        files: ["src/app/**"],
+        rules: {
+          // Expo Router uses default exports for route files; linters sometimes flag them as unused.
+          "no-unused-vars": "off",
+          "@typescript-eslint/no-unused-vars": "off",
+          // allow console in certain debug situations
+          "no-console": "off",
+        },
+      },
+    ],
+  },
 ]);

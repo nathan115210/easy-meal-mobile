@@ -1,47 +1,46 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useTheme } from "@react-navigation/native";
-import IconButton from "@/components/ui/icon-button";
+import {StyleSheet, Text, View} from "react-native";
+import {Ionicons} from "@expo/vector-icons";
+import {useTheme} from "@react-navigation/native";
+import useDrawer from "@/hooks/use-drawer";
 
-const CustomHeaderTitle = () => {
-  const { colors } = useTheme();
+type Props = {
+    hideMenu?: boolean;
+};
 
-  return (
-    <View style={styles.container}>
-      <Ionicons
-        name="medal"
-        size={24}
-        color={colors.text}
-        style={styles.icon}
-      />
-      <Text style={[styles.title, { color: colors.text }]}>Easy Meal</Text>
-      <IconButton
-        iconName={{ ios: "menu", android: "menu" }}
-        onPress={() => {
-          console.log("TODO: open the drawer");
-        }}
-      ></IconButton>
-    </View>
-  );
+const CustomHeaderTitle: React.FC<Props> = ({hideMenu}) => {
+    const {colors} = useTheme();
+    const {DrawerTrigger} = useDrawer({to: "open"});
+
+
+    return (
+        <View style={styles.container}>
+            {!hideMenu && <DrawerTrigger/>}
+            <View style={styles.logoRow}>
+                <Ionicons name="medal" size={24} color={colors.text}/>
+                <Text style={[styles.title, {color: colors.text}]}>Easy Meal</Text>
+            </View>
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "100%",
-    paddingHorizontal: 16,
-  },
-  icon: {
-    marginRight: 8,
-  },
-  title: {
-    flex: 1,
-    fontSize: 18,
-    fontWeight: "bold",
-  },
+    container: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: "100%",
+    },
+    logoRow: {
+        flexDirection: "row",
+        gap: 16,
+        justifyContent: "flex-end",
+    },
+
+    title: {
+        fontSize: 18,
+        fontWeight: "bold",
+    },
 });
 
 export default CustomHeaderTitle;
