@@ -42,8 +42,10 @@ export default function RootLayout() {
             <ThemeProvider value={theme}>
               <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
               <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                {/*<Stack.Screen name="modal" options={{ presentation: "modal" }} />*/}
+                <Stack.Screen
+                  name="(drawer)"
+                  options={{ headerShown: false }}
+                />
               </Stack>
             </ThemeProvider>
           </FavoritesProvider>

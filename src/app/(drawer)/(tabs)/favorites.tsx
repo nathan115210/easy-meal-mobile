@@ -6,9 +6,9 @@ import { mealsData } from "@/constants/data/data";
 
 import { ThemedText } from "@/components/ui/themed-text";
 import { ThemedView } from "@/components/ui/themed-view";
-import { useFavorites } from "../../context/favorite-context";
-import Card from "../../components/ui/card";
-import MealDetailInfoRow from "../../components/meal-detail/meal-detail-info-row";
+import { useFavorites } from "@/context/favorite-context";
+import Card from "@/components/ui/card";
+import MealDetailInfoRow from "@/components/meal-detail/meal-detail-info-row";
 
 export default function FavoritesTabScreen() {
   const { getFavoritesArray, toggleFavorite, isFavorite } = useFavorites();
