@@ -1,32 +1,25 @@
-import { Drawer } from "expo-router/drawer";
+import CustomHeaderTitle from "@/components/navigation/custom-header-title";
 import { Ionicons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
 import { router } from "expo-router";
+import { Drawer } from "expo-router/drawer";
+import { Platform } from "react-native";
 
 function DrawerLayout() {
   return (
     <Drawer
       screenOptions={{
-        headerShown: false,
-        swipeEnabled: true,
-        drawerActiveTintColor: "#e91e63",
-        drawerActiveBackgroundColor: "#fce4ec",
-        drawerType: "front",
-        drawerStatusBarAnimation: "fade",
+        headerTitle: () => <CustomHeaderTitle hideMenu />,
+        headerTransparent: true,
+        headerBackground: () =>
+          Platform.OS === 'ios' ? (
+            <BlurView
+              intensity={70}
+              tint="systemMaterial"
+              style={{ flex: 1 }}
+            />
+          ) : null,
       }}
-      /* drawerContent={(props) => (
-                 <DrawerContentScrollView {...props}>
-                     <DrawerItemList {...props} />
-
-                     {/!* Custom modal item (NOT a route) *!/}
-                     <DrawerItem
-                         label="Settings"
-                         icon={({color, size}) => (
-                             <Ionicons name="settings-outline" size={size} color={color}/>
-                         )}
-                         onPress={() => router.push("/settings")}
-                     />
-                 </DrawerContentScrollView>
-             )}*/
     >
       {/* Only define real routes that exist under app/(drawer)/... */}
       <Drawer.Screen

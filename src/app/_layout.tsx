@@ -1,17 +1,17 @@
-import React from "react";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { NavigationThemeColors } from "@/constants/theme";
+import { FavoritesProvider } from "@/context/favorite-context";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { useColorScheme } from "react-native";
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { NavigationThemeColors } from "@/constants/theme";
-import { FavoritesProvider } from "@/context/favorite-context";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { useColorScheme } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // TODO: Keep the splash screen visible while we fetch resources
 // SplashScreen.preventAutoHideAsync();
@@ -45,7 +45,7 @@ export default function RootLayout() {
                 <Stack.Screen
                   name="(drawer)"
                   options={{ headerShown: false }}
-                />
+                  />
               </Stack>
             </ThemeProvider>
           </FavoritesProvider>

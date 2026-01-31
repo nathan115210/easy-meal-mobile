@@ -1,16 +1,19 @@
+import { mealsData } from "@/constants/data/data";
+import { type MealItemProps } from "@/types/meal-type";
+import { router, Stack } from "expo-router";
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
-import { router, Stack } from "expo-router";
-import { type MealItemProps } from "@/types/meal-type";
-import { mealsData } from "@/constants/data/data";
 
+import MealDetailInfoRow from "@/components/meal-detail/meal-detail-info-row";
+import Card from "@/components/ui/card";
 import { ThemedText } from "@/components/ui/themed-text";
 import { ThemedView } from "@/components/ui/themed-view";
 import { useFavorites } from "@/context/favorite-context";
-import Card from "@/components/ui/card";
-import MealDetailInfoRow from "@/components/meal-detail/meal-detail-info-row";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function FavoritesTabScreen() {
+    const insets = useSafeAreaInsets();
+
   const { getFavoritesArray, toggleFavorite, isFavorite } = useFavorites();
   const favoritesList = getFavoritesArray();
 
@@ -58,6 +61,7 @@ export default function FavoritesTabScreen() {
   };
 
   const favoriteMeals = extractFavoriteMeals();
+  
   return (
     <ThemedView style={styles.container}>
       <Stack.Screen options={{ title: "Favorites" }} />
@@ -65,6 +69,9 @@ export default function FavoritesTabScreen() {
       <ThemedText type="title">Favorites</ThemedText>
       <FlatList
         data={favoriteMeals}
+        contentContainerStyle={{
+         paddingTop: insets.top + 6, paddingBlockEnd: insets.bottom + 60
+         }}
         ItemSeparatorComponent={() => <ThemedView style={styles.separator} />}
         renderItem={({ item }) => renderMealItemCard(item as MealItemProps)}
         keyExtractor={(item) => (item as MealItemProps).id}
