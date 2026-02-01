@@ -9,13 +9,12 @@ import { Platform } from "react-native";
 function DrawerLayout() {
   return (
     <Drawer
-      
       screenOptions={{
         //headerShown: false,
         headerTitle: () => <CustomHeaderTitle hideMenu />,
         headerTransparent: true,
         headerBackground: () =>
-          Platform.OS === 'ios' ? (
+          Platform.OS === "ios" ? (
             <BlurView
               intensity={70}
               tint="systemMaterial"

@@ -23,7 +23,6 @@ export default function MealsOverviewRoute() {
   const router = useRouter();
   const { toggleFavorite, isFavorite } = useFavorites();
 
-
   function renderMealItemCard(item: MealItemProps) {
     const { id, title, imageUrl, duration, complexity, affordability } = item;
 
@@ -51,7 +50,12 @@ export default function MealsOverviewRoute() {
   }
 
   return (
-    <ThemedView style={[styles.container, { marginTop: insets.top + 32, paddingBlockEnd: insets.bottom }]}>
+    <ThemedView
+      style={[
+        styles.container,
+        { marginTop: insets.top + 32, paddingBlockEnd: insets.bottom },
+      ]}
+    >
       <Stack.Screen
         options={{
           headerBackTitle: "Home",

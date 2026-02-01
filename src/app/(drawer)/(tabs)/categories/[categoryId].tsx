@@ -36,7 +36,7 @@ export default function CategoryMealsScreen() {
   const headerTintColor = useMemo(() => {
     return getContrastColor(headerBackGround);
   }, [headerBackGround]);
-  console.log('headerBackGround', headerBackGround)
+
   const filterGlutenFree = glutenFree === "1";
   const filterVegan = vegan === "1";
   const filterVegetarian = vegetarian === "1";
@@ -89,7 +89,7 @@ export default function CategoryMealsScreen() {
   return (
     <ThemedView style={[styles.container, { paddingTop: insets.top }]}>
       <Stack.Screen options={{ headerShown: false }} />
-      <BackRow title={categoryTitle} backgroundColor={headerBackGround}/>
+      <BackRow title={categoryTitle} backgroundColor={headerBackGround} />
 
       <FlatList
         contentContainerStyle={styles.mealsListContent}

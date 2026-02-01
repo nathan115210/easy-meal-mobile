@@ -1,9 +1,9 @@
-import { ThemedText } from '@/components/ui/themed-text';
-import { ThemedView } from '@/components/ui/themed-view';
-import { useNavigation } from 'expo-router';
-import { SetStateAction, useEffect, useMemo, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ThemedText } from "@/components/ui/themed-text";
+import { ThemedView } from "@/components/ui/themed-view";
+import { useNavigation } from "expo-router";
+import { SetStateAction, useEffect, useMemo, useState } from "react";
+import { FlatList, StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type Item = {
   id: string;
@@ -11,30 +11,31 @@ type Item = {
 };
 
 const DATA: Item[] = [
-  { id: '1', title: 'Chicken Curry' },
-  { id: '2', title: 'Beef Stew' },
-  { id: '3', title: 'Salmon Teriyaki' },
-  { id: '4', title: 'Pasta Carbonara' },
-  { id: '5', title: 'Vegetable Soup' },
-  
+  { id: "1", title: "Chicken Curry" },
+  { id: "2", title: "Beef Stew" },
+  { id: "3", title: "Salmon Teriyaki" },
+  { id: "4", title: "Pasta Carbonara" },
+  { id: "5", title: "Vegetable Soup" },
 ];
 
 export default function SearchScreen() {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     // iOS native search bar (ignored on Android)
     navigation.setOptions({
       headerSearchBarOptions: {
-        placeholder: 'Search meals',
+        placeholder: "Search meals",
         hideWhenScrolling: false,
-        onChangeText: (event: { nativeEvent: { text: SetStateAction<string>; }; }) => {
+        onChangeText: (event: {
+          nativeEvent: { text: SetStateAction<string> };
+        }) => {
           setQuery(event.nativeEvent.text);
         },
         onCancelButtonPress: () => {
-          setQuery('');
+          setQuery("");
         },
       },
     });
@@ -43,12 +44,20 @@ export default function SearchScreen() {
   const filteredData = useMemo(() => {
     if (!query) return DATA;
     return DATA.filter((item) =>
-      item.title.toLowerCase().includes(query.toLowerCase())
+      item.title.toLowerCase().includes(query.toLowerCase()),
     );
   }, [query]);
 
   return (
-    <ThemedView style={[styles.container, { marginBlockStart: insets.top+60, paddingBlockEnd: insets.bottom+60 }]}>
+    <ThemedView
+      style={[
+        styles.container,
+        {
+          marginBlockStart: insets.top + 60,
+          paddingBlockEnd: insets.bottom + 60,
+        },
+      ]}
+    >
       {filteredData.length === 0 ? (
         <ThemedText style={styles.empty}>No results</ThemedText>
       ) : (
@@ -74,14 +83,14 @@ const styles = StyleSheet.create({
   row: {
     padding: 16,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#E5E5EA',
+    borderBottomColor: "#E5E5EA",
   },
   title: {
     fontSize: 16,
   },
   empty: {
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 40,
-    color: '#8E8E93',
+    color: "#8E8E93",
   },
 });

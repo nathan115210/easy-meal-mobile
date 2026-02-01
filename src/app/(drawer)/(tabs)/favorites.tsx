@@ -12,7 +12,7 @@ import { useFavorites } from "@/context/favorite-context";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function FavoritesTabScreen() {
-    const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets();
 
   const { getFavoritesArray, toggleFavorite, isFavorite } = useFavorites();
   const favoritesList = getFavoritesArray();
@@ -61,7 +61,7 @@ export default function FavoritesTabScreen() {
   };
 
   const favoriteMeals = extractFavoriteMeals();
-  
+
   return (
     <ThemedView style={styles.container}>
       <Stack.Screen options={{ title: "Favorites" }} />
@@ -70,8 +70,9 @@ export default function FavoritesTabScreen() {
       <FlatList
         data={favoriteMeals}
         contentContainerStyle={{
-         paddingTop: insets.top + 6, paddingBlockEnd: insets.bottom + 60
-         }}
+          paddingTop: insets.top + 6,
+          paddingBlockEnd: insets.bottom + 60,
+        }}
         ItemSeparatorComponent={() => <ThemedView style={styles.separator} />}
         renderItem={({ item }) => renderMealItemCard(item as MealItemProps)}
         keyExtractor={(item) => (item as MealItemProps).id}

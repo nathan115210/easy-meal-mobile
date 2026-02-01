@@ -4,7 +4,7 @@ import { type CategoryItemProps } from "@/types/category-type";
 import { useRouter } from "expo-router";
 import React from "react";
 import { FlatList } from "react-native";
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeTabScreen() {
   const insets = useSafeAreaInsets();
@@ -32,12 +32,15 @@ export default function HomeTabScreen() {
 
   return (
     <FlatList
-        contentContainerStyle={{ paddingBlockStart: insets.top - 16, paddingBlockEnd: insets.bottom + 32 }}
-        data={categoriesData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => renderCategoryItem(item)}
-        numColumns={numColumns}
-        key={String(numColumns)}
-      />
+      contentContainerStyle={{
+        paddingBlockStart: insets.top - 16,
+        paddingBlockEnd: insets.bottom + 32,
+      }}
+      data={categoriesData}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => renderCategoryItem(item)}
+      numColumns={numColumns}
+      key={String(numColumns)}
+    />
   );
 }

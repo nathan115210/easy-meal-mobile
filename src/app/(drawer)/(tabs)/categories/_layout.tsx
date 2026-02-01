@@ -1,9 +1,11 @@
-import { Stack } from 'expo-router';
+import { Stack } from "expo-router";
 
 export default function CategoriesLayout() {
   return (
-    <Stack screenOptions={{
+    <Stack
+      screenOptions={{
         headerShown: false,
-      }}/>
+      }}
+    />
   );
 }

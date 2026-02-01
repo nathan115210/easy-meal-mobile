@@ -2,7 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Pressable, StyleSheet, Text, useColorScheme, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ThemedView } from "./themed-view";
 
@@ -23,7 +29,10 @@ function BackRow({ title, backgroundColor, textColor }: BackRowProps) {
     <ThemedView
       style={[
         styles.backRow,
-        { paddingTop: insets.top + 8, backgroundColor: backgroundColor ?? undefined },
+        {
+          paddingTop: insets.top + 8,
+          backgroundColor: backgroundColor ?? undefined,
+        },
       ]}
     >
       {/* Blur base */}
@@ -38,7 +47,7 @@ function BackRow({ title, backgroundColor, textColor }: BackRowProps) {
             StyleSheet.absoluteFill,
             {
               backgroundColor,
-              opacity: colorScheme === "dark" ? 0.7 : 0.6
+              opacity: colorScheme === "dark" ? 0.7 : 0.6,
             },
           ]}
         />
@@ -72,7 +81,6 @@ const styles = StyleSheet.create({
   backButton: {
     flexDirection: "row",
     gap: 6, // RN 0.71+; if not supported, use marginLeft on titleWrap
-    
   },
 
   pressed: {
