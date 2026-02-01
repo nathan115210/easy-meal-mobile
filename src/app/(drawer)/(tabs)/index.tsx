@@ -1,48 +1,82 @@
-import GridItem from "@/components/ui/grid-item";
-import { ThemedView } from "@/components/ui/themed-view";
-import { categoriesData } from "@/constants/data/data";
-import { type CategoryItemProps } from "@/types/category-type";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import React from "react";
-import { FlatList } from "react-native";
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { FlatList, StyleSheet } from "react-native";
 
-export default function HomeTabScreen() {
+import MealDetailInfoRow from "@/components/meal-detail/meal-detail-info-row";
+import Card from "@/components/ui/card";
+import { ThemedView } from "@/components/ui/themed-view";
+import { mealsData } from "@/constants/data/data";
+import { useFavorites } from "@/context/favorite-context";
+import { type MealItemProps } from "@/types/meal-type";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+type MealsOverviewParams = {
+  categoryId?: string;
+  categoryName?: string;
+  glutenFree?: string; // "1" | "0"
+  vegan?: string; // "1" | "0"
+  vegetarian?: string; // "1" | "0"
+};
+
+export default function MealsOverviewRoute() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const numColumns = 2;
+  const { toggleFavorite, isFavorite } = useFavorites();
 
-  function renderCategoryItem(item: CategoryItemProps) {
+
+  function renderMealItemCard(item: MealItemProps) {
+    const { id, title, imageUrl, duration, complexity, affordability } = item;
+
     return (
-      <GridItem
-        title={item.title}
-        color={item.color}
-        backgroundImage={item.imageUrl}
-        onPress={() => {
+      <Card
+        title={title}
+        imageUrl={imageUrl}
+        isFavorite={isFavorite(id)}
+        onFavoriteToggle={() => toggleFavorite(id)}
+        onPress={() =>
           router.push({
-            pathname: "/meals-overview",
-            params: {
-              categoryId: item.id,
-              categoryName: item.title,
-            },
-          });
-        }}
-      />
+            pathname: "/meal/[mealId]",
+            params: { mealId: id },
+          })
+        }
+      >
+        <MealDetailInfoRow
+          duration={duration}
+          complexity={complexity}
+          affordability={affordability}
+          background="surface"
+        />
+      </Card>
     );
   }
 
   return (
-     <ThemedView >
+    <ThemedView style={[styles.container, { marginTop: insets.top + 32, paddingBlockEnd: insets.bottom }]}>
+      <Stack.Screen
+        options={{
+          headerBackTitle: "Home",
+        }}
+      />
+
       <FlatList
-        contentContainerStyle={{
-         paddingTop: insets.top + 60, paddingBlockEnd: insets.bottom + 60
-         }}
-        data={categoriesData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => renderCategoryItem(item)}
-        numColumns={numColumns}
-        key={String(numColumns)}
+        contentContainerStyle={styles.mealsListContent}
+        data={mealsData}
+        ItemSeparatorComponent={() => <ThemedView style={styles.separator} />}
+        renderItem={({ item }) => renderMealItemCard(item as MealItemProps)}
+        keyExtractor={(item) => (item as MealItemProps).id}
       />
     </ThemedView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  mealsListContent: {
+    padding: 32,
+  },
+  separator: {
+    height: 24,
+  },
+});

@@ -1,49 +1,51 @@
+import { getContrastColor } from "@/utils/get-contrast-color";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useMemo } from "react";
 import { FlatList, StyleSheet } from "react-native";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 
-import { categoriesData, mealsData } from "@/constants/data/data";
-import { ThemedView } from "@/components/ui/themed-view";
-import { getContrastColor } from "@/utils/get-contrast-color";
-import Card from "@/components/ui/card";
 import MealDetailInfoRow from "@/components/meal-detail/meal-detail-info-row";
+import BackRow from "@/components/ui/back-row";
+import Card from "@/components/ui/card";
+import { ThemedView } from "@/components/ui/themed-view";
+import { categoriesData, mealsData } from "@/constants/data/data";
+import { useFavorites } from "@/context/favorite-context";
 import { type MealItemProps } from "@/types/meal-type";
-import { useFavorites } from "../context/favorite-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-type MealsOverviewParams = {
+type Params = {
   categoryId?: string;
-  categoryName?: string;
-
   glutenFree?: string; // "1" | "0"
   vegan?: string; // "1" | "0"
   vegetarian?: string; // "1" | "0"
 };
 
-export default function MealsOverviewRoute() {
+export default function CategoryMealsScreen() {
+  const insets = useSafeAreaInsets();
   const router = useRouter();
   const { toggleFavorite, isFavorite } = useFavorites();
-
-  const { categoryId, categoryName, glutenFree, vegan, vegetarian } =
-    useLocalSearchParams<MealsOverviewParams>();
+  const { categoryId, glutenFree, vegan, vegetarian } =
+    useLocalSearchParams<Params>();
 
   const safeCategoryId = typeof categoryId === "string" ? categoryId : "";
-  const safeCategoryName =
-    typeof categoryName === "string" ? categoryName : "Meals";
-
-  const filterGlutenFree = glutenFree === "1";
-  const filterVegan = vegan === "1";
-  const filterVegetarian = vegetarian === "1";
-
   const headerBackGround = useMemo(() => {
     return (
       categoriesData.find((category) => category.id === safeCategoryId)
         ?.color ?? "#000000"
     );
   }, [safeCategoryId]);
-
   const headerTintColor = useMemo(() => {
     return getContrastColor(headerBackGround);
   }, [headerBackGround]);
+  console.log('headerBackGround', headerBackGround)
+  const filterGlutenFree = glutenFree === "1";
+  const filterVegan = vegan === "1";
+  const filterVegetarian = vegetarian === "1";
+
+  const categoryTitle = useMemo(() => {
+    return (
+      categoriesData.find((c) => c.id === safeCategoryId)?.title ?? "Meals"
+    );
+  }, [safeCategoryId]);
 
   const displayedMeals = useMemo(() => {
     if (!safeCategoryId) return [];
@@ -85,15 +87,9 @@ export default function MealsOverviewRoute() {
   }
 
   return (
-    <ThemedView style={styles.container}>
-      <Stack.Screen
-        options={{
-          title: safeCategoryName,
-          headerBackTitle: "Home",
-          headerStyle: { backgroundColor: headerBackGround },
-          headerTintColor,
-        }}
-      />
+    <ThemedView style={[styles.container, { paddingTop: insets.top }]}>
+      <Stack.Screen options={{ headerShown: false }} />
+      <BackRow title={categoryTitle} backgroundColor={headerBackGround}/>
 
       <FlatList
         contentContainerStyle={styles.mealsListContent}
@@ -107,13 +103,7 @@ export default function MealsOverviewRoute() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  mealsListContent: {
-    padding: 32,
-  },
-  separator: {
-    height: 24,
-  },
+  container: { flex: 1 },
+  mealsListContent: { padding: 32 },
+  separator: { height: 24 },
 });

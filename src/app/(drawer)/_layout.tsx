@@ -3,12 +3,15 @@ import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 import { router } from "expo-router";
 import { Drawer } from "expo-router/drawer";
+import React from "react";
 import { Platform } from "react-native";
 
 function DrawerLayout() {
   return (
     <Drawer
+      
       screenOptions={{
+        //headerShown: false,
         headerTitle: () => <CustomHeaderTitle hideMenu />,
         headerTransparent: true,
         headerBackground: () =>
