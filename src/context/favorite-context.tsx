@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   createContext,
   ReactNode,
@@ -8,21 +9,32 @@ import {
   useRef,
   useState,
 } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface FavoritesContextValue {
   /** True while favorites are being loaded from storage */
   isHydrating: boolean;
-  /** Number of favorites */
+
+  /** Total number of favorites */
   count: number;
+
+  /** Badge count (resets when Favorites tab is focused) */
+  badgeCount: number;
+
+  /** Reset badge to 0 */
+  resetBadge: () => void;
+
   /** Check if an item is favorited */
   isFavorite: (id: string) => boolean;
+
   /** Add an item to favorites */
   addFavorite: (id: string) => void;
+
   /** Remove an item from favorites */
   removeFavorite: (id: string) => void;
+
   /** Toggle favorite state */
   toggleFavorite: (id: string) => void;
+
   /** Get favorites as an array (useful for lists, syncing, etc.) */
   getFavoritesArray: () => string[];
 }
@@ -32,6 +44,8 @@ const FAVORITES_KEY = "favorites:v1";
 const FavoritesContext = createContext<FavoritesContextValue | null>(null);
 
 async function readFavoritesFromStorage(): Promise<string[]> {
+  // Temporary code to clear old storage format
+  //await AsyncStorage.removeItem("favorites:v2");
   const raw = await AsyncStorage.getItem(FAVORITES_KEY);
   if (!raw) return [];
   try {
@@ -56,6 +70,9 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     () => new Set(),
   );
 
+  // Badge count = "unseen favorites additions" since last visit to favorites tab
+  const [badgeCount, setBadgeCount] = useState(0);
+
   // Avoid writing to storage before initial hydration finishes.
   const hasHydratedRef = useRef(false);
 
@@ -68,6 +85,10 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
         const ids = await readFavoritesFromStorage();
         if (!isMounted) return;
         setFavoritesSet(new Set(ids));
+
+        // Optional: when app starts, we usually don't want a badge.
+        // Keep it 0 by default.
+        setBadgeCount(0);
       } finally {
         if (!isMounted) return;
         hasHydratedRef.current = true;
@@ -79,8 +100,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       isMounted = false;
     };
   }, []);
-  // Persist helper (debounce not necessary for typical favorites usage;
-  // if you expect rapid toggles, add a debounce here).
+
   const persist = useCallback(async (nextSet: Set<string>) => {
     if (!hasHydratedRef.current) return;
     await writeFavoritesToStorage(Array.from(nextSet));
@@ -91,12 +111,21 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     [favoritesSet],
   );
 
+  const resetBadge = useCallback(() => {
+    setBadgeCount(0);
+  }, []);
+
   const addFavorite = useCallback(
     (id: string) => {
       setFavoritesSet((prev) => {
         if (prev.has(id)) return prev;
+
         const next = new Set(prev);
         next.add(id);
+
+        // increment badge only when newly added
+        setBadgeCount((c) => c + 1);
+
         void persist(next);
         return next;
       });
@@ -108,8 +137,11 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     (id: string) => {
       setFavoritesSet((prev) => {
         if (!prev.has(id)) return prev;
+
         const next = new Set(prev);
         next.delete(id);
+
+        // do NOT change badge when removing (keeps "new additions" semantics)
         void persist(next);
         return next;
       });
@@ -121,8 +153,17 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     (id: string) => {
       setFavoritesSet((prev) => {
         const next = new Set(prev);
-        if (next.has(id)) next.delete(id);
-        else next.add(id);
+
+        const wasFavorited = next.has(id);
+        if (wasFavorited) {
+          next.delete(id);
+          // do NOT change badge on removal
+        } else {
+          next.add(id);
+          // increment badge only on add
+          setBadgeCount((c) => c + 1);
+        }
+
         void persist(next);
         return next;
       });
@@ -139,6 +180,8 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     () => ({
       isHydrating,
       count: favoritesSet.size,
+      badgeCount,
+      resetBadge,
       isFavorite,
       getFavoritesArray,
       toggleFavorite,
@@ -147,8 +190,10 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     }),
     [
       isHydrating,
-      isFavorite,
       favoritesSet.size,
+      badgeCount,
+      resetBadge,
+      isFavorite,
       getFavoritesArray,
       toggleFavorite,
       addFavorite,
