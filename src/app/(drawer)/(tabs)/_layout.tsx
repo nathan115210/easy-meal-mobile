@@ -18,7 +18,7 @@ export default function TabsLayout() {
   }, [isFavoritesFocused, resetBadge]);
 
   return (
-    <NativeTabs>
+    <NativeTabs minimizeBehavior="onScrollDown">
       <NativeTabs.Trigger name="index">
         <Label>Home</Label>
         <Icon sf="house.fill" />

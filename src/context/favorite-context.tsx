@@ -135,7 +135,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
   const removeFavorite = useCallback(
     (id: string) => {
-      setFavoritesSet((prev) => {
+      setFavoritesSet((prev:Set<string>) => {
         if (!prev.has(id)) return prev;
 
         const next = new Set(prev);
@@ -151,7 +151,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
   const toggleFavorite = useCallback(
     (id: string) => {
-      setFavoritesSet((prev) => {
+      setFavoritesSet((prev: Set<string>) => {
         const next = new Set(prev);
 
         const wasFavorited = next.has(id);
